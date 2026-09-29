@@ -1,26 +1,130 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f6f7f9;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --muted: #64748b;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --radius: 0.625rem;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --font-template-inter: var(--font-inter), sans-serif;
+  --font-template-roboto: var(--font-roboto), sans-serif;
+  --font-template-lato: var(--font-lato), sans-serif;
+  --font-template-source: var(--font-source), sans-serif;
+  --font-template-merriweather: var(--font-merriweather), serif;
+  --font-template-poppins: var(--font-poppins), sans-serif;
+  --font-template-playfair: var(--font-playfair), serif;
+  --font-template-ibm: var(--font-ibm-plex), sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--border);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+/* Thin scrollbars for editor panes */
+.scroll-thin::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+.scroll-thin::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+  background-clip: content-box;
+}
+
+/* ---------------- Resume page + print ---------------- */
+/* Width/height are set inline per page size (Letter 816×1056, A4 794×1123). */
+.resume-page {
+  width: 816px;
+  min-height: 1056px;
+  background: white;
+  color: #111;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Keep resume entries and bullets from being split across printed pages. */
+@media print {
+  @page {
+    size: letter;
+    margin: 0;
+  }
+  html,
+  body {
+    background: white !important;
+    margin: 0;
+    padding: 0;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-root {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .resume-page {
+    box-shadow: none !important;
+    width: 100% !important;
+    min-height: 100vh;
+  }
+  [data-break],
+  img {
+    break-inside: avoid;
+  }
+}
+
+/* On-screen stacked pages (the paginated preview). */
+.page-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.page-sheet {
+  position: relative;
+  background: white;
+  color: #111;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.page-badge {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  font-size: 11px;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 1px 6px;
+  border-radius: 6px;
+  pointer-events: none;
 }
